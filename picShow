@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>点击图片增加文件</title>
+<style type="text/css">
+.addfile ul{list-style:none}
+.addfile ul li{ float:left;margin-right:40px}
+.div1 {
+	height: 144px;
+	width: 144px;
+	position: relative;
+	border:2px dotted #999 ;
+	display:inline-block
+}
+
+.div2 {
+	text-align: center;
+	padding-top: 8px;
+	font-size: 80px;
+	color:#999;
+}
+.div2 img{width:144px;height:143px;}
+
+.inputstyle {
+	width: 144px;
+	height: 144px;
+	cursor: pointer;
+	font-size: 80px;
+	outline: medium none;
+	position: absolute;
+	filter: alpha(opacity = 0);
+	-moz-opacity: 0;
+	opacity: 0;
+	left: 0px;
+	top: 0px;
+}
+.test{
+	width: 144px;
+	height: 144px;
+	border:1px solid red;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<div class="addfile"> 
+<ul>
+	<li>
+		<span>图片1：</span>
+		<div class="div1">
+		    <div class="div2"><img alt="+"/></div><input type="file" class="inputstyle" onchange="PreviewImage(this,this.previousSibling)">
+		</div>
+	</li>
+	<li>
+		<label>图片2：</label>
+		<div class="div1">
+		    <div class="div2"><img alt="+"/></div><input type="file" class="inputstyle" onchange="PreviewImage(this,this.previousSibling)">
+		</div>
+	</li>
+</ul>
+</div>
+<script type="text/javascript">
+function PreviewImage(imgFile,showDiv) {
+	var pattern = /(\.*.jpg$)|(\.*.png$)|(\.*.jpeg$)|(\.*.gif$)|(\.*.bmp$)/;
+	if (!pattern.test(imgFile.value)) {
+		layer.alert("系统仅支持jpg/jpeg/png/gif/bmp格式的照片！");
+		imgFile.focus();
+	} else {
+		var path;
+		if (document.all)//IE
+		{
+			imgFile.select();
+			path = document.selection.createRange().text;
+			alert(path);
+			showDiv.innerHTML = "";
+			showDiv.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='image',src=\""+ path + "\")";//使用滤镜效果
+			
+			console.log($(showDiv).find('img'));
+			$(showDiv).find('img').attr({'width':'144px','height':'144px'});
+			
+		} else//FF
+		{
+			path = URL.createObjectURL(imgFile.files[0]);
+			showDiv.innerHTML = "<img src='"+path+"'/>";
+		}
+	}
+}
+</script>
+</body>
+</html>
